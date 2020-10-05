@@ -10,11 +10,7 @@ class WebHelper
 
     public function getLoadOptions()
     {
-        if (empty($_REQUEST[self::LOAD_OPTIONS])) {
-            throw new Exception('loadOptions are not set');
-        }
-
-        return($_REQUEST[self::LOAD_OPTIONS]);
+        return($this->getRequestParam(self::LOAD_OPTIONS));
     }
 
     public function getAction()
@@ -26,6 +22,14 @@ class WebHelper
     public function formatSeconds($s) {
         if ($s < 60) return "$s seconds";
         $s = $s/60; return "$s minutes";
+    }
+
+    public function getRequestParam($item) {
+        if (empty($_REQUEST[$item])) {
+            throw new Exception($item . ' are not set');
+        }
+
+        return($_REQUEST[$item]);
     }
 
     public function getEnv($name, $default) {

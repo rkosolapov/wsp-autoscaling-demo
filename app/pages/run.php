@@ -1,6 +1,7 @@
 <h4>Apache Benchmark</h4>
 
 <?php
+    $WSPPREFIX = wsp-stat;
     require_once('lib/WebHelper.php');
     $webHelper = new WebHelper();
     $loadOptions = $webHelper->getLoadOptions();
@@ -12,7 +13,11 @@
     $abHelper = new AbHelper();
     $abHelper->addOption("-c $users");
     $abHelper->addOption("-t $time");
-    $abHelper->addOption("-e /app/stats.csv");
+    
+    $statFile = tempnam('/app/', $WSPPREFIX);
+    chmod($statFile, 0666);
+    $abHelper->addOption("-e $statFile");
+    $statFileUrl = $_SERVER['HTTP_HOST'] . "/" . basename($statFile);
 
     $url = $_SERVER['HTTP_HOST'] . "/index.php?" . WebHelper::ACTION . "=" . WebHelper::ACTION_CONSUME;
     foreach ($loadOptions as $k=>$v) $url .= "&loadOptions[$k]=$v";
@@ -45,7 +50,7 @@ Running <i>`<?= $cmd ?>`</i> <br>It will take <b><?= $webHelper->formatSeconds($
 
 <p class='lead'>The load pattern: 
 <ul class='lead'>
-    <li><?= $users ?> users simultaneously connects to the app. When the app responds, the user connects again
+    <li><?= $users ?> users simultaneously connect to the app. When the app responds, the user connects again
     <li>Each query consumes the resources you've chose (<?php echo implode(', ', array_keys($loadOptions)); ?>) using the <i>stress-ng</i> utility 
 </ul></p>
     
@@ -64,7 +69,55 @@ Running <i>`<?= $cmd ?>`</i> <br>It will take <b><?= $webHelper->formatSeconds($
 </pre>
 <script>var link = document.getElementById('pleaseWait'); link.style.display = 'none'; link.style.visibility = 'hidden';</script>
 
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<div id="chartContainer" style="height: 370px; width: 100%; margin-top: 1em; margin-bottom: 1em;"></div>
+<script>
+function showGraph() {
+    var dataPoints = [];
+    
+    var chart = new CanvasJS.Chart("chartContainer", {
+        animationEnabled: true,
+        exportEnabled: true,
+        title:{
+            text: "Response time"
+        },
+        axisY: {
+            title: "Response time, ms"
+        },
+        data: [{
+            type: "column",
+            toolTipContent: "{x}% of requests have been served in less than {y} ms",
+            dataPoints: dataPoints
+        }]
+    });
+    
+    $.get("http://<?= $statFileUrl ?>", getDataPointsFromCSV);
+    
+    //CSV Format
+    //Percent,ResponseTime
+    function getDataPointsFromCSV(csv) {
+        var csvLines = points = [];
+        csvLines = csv.split(/[\r?\n|\r|\n]+/);
+        for (var i = 0; i < csvLines.length; i++) {
+            if (csvLines[i].length > 0) {
+                console.log(csvLines[i]);
+                points = csvLines[i].split(",");
+                dataPoints.push({
+                    label: points[0],
+                    y: parseFloat(points[1])
+                });
+            }
+        }
+        chart.render();
+    }
+    
+}
+showGraph();
+</script>
+
 <form role='form' method='get' action='index.php'>
   <input type='hidden' name='action' value='<?= WebHelper::ACTION_START ?>'/>
   <button type="submit" name='button' value='next' class="btn btn-primary">OK</button>
 </form>
+
+<?php exec('find /app/'.$WSPPREFIX.'* -mtime +5 -exec rm {} \;'); ?>

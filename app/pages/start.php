@@ -4,11 +4,12 @@
   <li>the app is redeployed after that.
 </ul></p>
 
+<?php require_once('lib/WebHelper.php'); ?>
 
 <h4>Choose resources to consume</h4>
 
 <form role='form' method='get' action='index.php'>
-  <input type='hidden' name='action' value='step1run'/>
+  <input type='hidden' name='action' value='<?= WebHelper::ACTION_RUN ?>'/>
 
   <div class="form-group form-check">
     <input type="checkbox" class="form-check-input" name="loadOptions[CPU]" id='c1'>

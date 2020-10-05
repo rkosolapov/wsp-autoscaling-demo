@@ -1,12 +1,15 @@
 projectname=wsp-autoscaling-demo
 port=80
-help: ## Display help on make targets
+help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-run:	## Run a report in Docker container
+run:
 	docker run --rm -p $(port):$(port) $(projectname):latest
 
-container:	## Build a Docker container from the Dockerfile
+run-dev:  
+	docker run --rm -p $(port):$(port) -e WSP_APP_TIME=10 -e WSP_APP_USERS=5 $(projectname):latest
+
+container:
 	docker build -f Dockerfile -t $(projectname):latest .
 
 enter-container:

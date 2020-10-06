@@ -11,13 +11,13 @@ foreach($loadOptions as $option=>$state) {
     if (empty($state)) continue;
     switch($option) {
         case StressHelper::CPU:
-            $stress->addOption('--cpu 4');
+            $stress->addOption('--cpu 6');
         break;
         case StressHelper::RAM:
-            $stress->addOption('--vm 1 --vm-bytes 512m');
+            $stress->addOption('--vm 3 --vm-bytes 512m');
         break;
         case StressHelper::IO:
-            $stress->addOption('--io 2');
+            $stress->addOption('--io 6');
         break;
         default:
             throw new Exception("Unknown loadOption '$option'");

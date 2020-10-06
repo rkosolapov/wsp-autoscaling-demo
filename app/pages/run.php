@@ -18,8 +18,15 @@
     chmod($statFile, 0666);
     $abHelper->addOption("-e $statFile");
 
-    $protocol = empty($_SERVER['REQUEST_SCHEME']) ? "https" : $_SERVER['REQUEST_SCHEME'];
-    error_log('$_SERVER[REQUEST_SCHEME]=' . $_SERVER['REQUEST_SCHEME'] . '; protocol=' . $protocol);
+    if (isset($_SERVER['HTTPS']) &&
+        ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
+        isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
+        $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+        $protocol = 'https';
+    } else {
+        $protocol = 'http';
+    }   
+    error_log('protocol=' . $protocol);
 
     $statFileUrl = $protocol . '://' . $_SERVER['HTTP_HOST'] . "/" . basename($statFile);
 

@@ -19,10 +19,12 @@
 
 function main() 
 {
-    //var_dump($_REQUEST);  var_dump($_SERVER);  // debug
-
     require_once('lib/WebHelper.php');
     $webHelper = new WebHelper();
+
+    if ($webHelper->getEnv('WSP_DEBUG', false)) {
+        error_log('$_REQUEST: ' . print_r($_REQUEST, true) . '; $_SERVER: ' . print_r($_SERVER, true));
+    }
 
     switch ($webHelper->getAction())
     {

@@ -19,7 +19,7 @@
 
 function main() 
 {
-    //var_dump($_REQUEST);  //var_dump($_SERVER);  // debug
+    //var_dump($_REQUEST);  var_dump($_SERVER);  // debug
 
     require_once('lib/WebHelper.php');
     $webHelper = new WebHelper();

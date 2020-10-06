@@ -17,7 +17,7 @@
     $statFile = tempnam('/app/', $WSPPREFIX);
     chmod($statFile, 0666);
     $abHelper->addOption("-e $statFile");
-    $protocol = empty($_SERVER['HTTPS']) ? "http" : "https";
+    $protocol = empty($_SERVER['REQUEST_SCHEME']) ? "http" : $_SERVER['REQUEST_SCHEME'];
     $statFileUrl = $protocol . '://' . $_SERVER['HTTP_HOST'] . "/" . basename($statFile);
 
     $url = $protocol . '://' . $_SERVER['HTTP_HOST'] . "/index.php?" . WebHelper::ACTION . "=" . WebHelper::ACTION_CONSUME;

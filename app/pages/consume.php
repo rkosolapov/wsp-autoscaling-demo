@@ -23,6 +23,6 @@ foreach($loadOptions as $option=>$state) {
             throw new Exception("Unknown loadOption '$option'");
     }
 }
-if ($stress->run() !== 0) throw new Exception('Stress execution failed');
+if ($stress->run() !== 0) throw new Exception('Stress execution failed: ' . print_r($stress->getLastRun(), true));
 
 print_r($stress->getLastRun());

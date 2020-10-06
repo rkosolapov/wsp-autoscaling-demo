@@ -1,7 +1,7 @@
 <h4>Apache Benchmark</h4>
 
 <?php
-    $WSPPREFIX = wsp-stat;
+    $WSPPREFIX = 'wsp-stat';
     require_once('lib/WebHelper.php');
     $webHelper = new WebHelper();
     $loadOptions = $webHelper->getLoadOptions();
@@ -17,9 +17,10 @@
     $statFile = tempnam('/app/', $WSPPREFIX);
     chmod($statFile, 0666);
     $abHelper->addOption("-e $statFile");
-    $statFileUrl = $_SERVER['HTTP_HOST'] . "/" . basename($statFile);
+    $protocol = empty($_SERVER['HTTPS']) ? "http" : "https";
+    $statFileUrl = $protocol . '://' . $_SERVER['HTTP_HOST'] . "/" . basename($statFile);
 
-    $url = $_SERVER['HTTP_HOST'] . "/index.php?" . WebHelper::ACTION . "=" . WebHelper::ACTION_CONSUME;
+    $url = $protocol . '://' . $_SERVER['HTTP_HOST'] . "/index.php?" . WebHelper::ACTION . "=" . WebHelper::ACTION_CONSUME;
     foreach ($loadOptions as $k=>$v) $url .= "&loadOptions[$k]=$v";
     $abHelper->addOption("'$url'");
 
@@ -51,7 +52,7 @@ Running <i>`<?= $cmd ?>`</i> <br>It will take <b><?= $webHelper->formatSeconds($
 <p class='lead'>The load pattern: 
 <ul class='lead'>
     <li><?= $users ?> users simultaneously connect to the app. When the app responds, the user connects again
-    <li>Each query consumes the resources you've chose (<?php echo implode(', ', array_keys($loadOptions)); ?>) using the <i>stress-ng</i> utility 
+    <li>Each query consumes the resources you've chose (<?php echo implode(', ', array_keys($loadOptions)); ?>) using the <i>stress-ng</i> utility for 1 second
 </ul></p>
     
 <hr class='my-4'>
@@ -91,7 +92,7 @@ function showGraph() {
         }]
     });
     
-    $.get("http://<?= $statFileUrl ?>", getDataPointsFromCSV);
+    $.get("<?= $statFileUrl ?>", getDataPointsFromCSV);
     
     //CSV Format
     //Percent,ResponseTime
@@ -100,7 +101,6 @@ function showGraph() {
         csvLines = csv.split(/[\r?\n|\r|\n]+/);
         for (var i = 0; i < csvLines.length; i++) {
             if (csvLines[i].length > 0) {
-                console.log(csvLines[i]);
                 points = csvLines[i].split(",");
                 dataPoints.push({
                     label: points[0],

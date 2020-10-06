@@ -14,7 +14,7 @@ foreach($loadOptions as $option=>$state) {
             $stress->addOption('--cpu 4');
         break;
         case StressHelper::RAM:
-            $stress->addOption('--vm 1 --vm-bytes 512k');
+            $stress->addOption('--vm 1 --vm-bytes 512m');
         break;
         case StressHelper::IO:
             $stress->addOption('--io 2');
@@ -24,3 +24,5 @@ foreach($loadOptions as $option=>$state) {
     }
 }
 if ($stress->run() !== 0) throw new Exception('Stress execution failed');
+
+print_r($stress->getLastRun());

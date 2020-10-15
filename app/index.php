@@ -13,7 +13,13 @@
 <div class="jumbotron">
 
 <h1 class="display-4">Web Services Platform</h1>
-<h3>Autoscaling demo application</h3>
+<h3>Autoscaling demo application 
+<?php
+    require_once('lib/WebHelper.php');
+    $webHelper = new WebHelper(); 
+    $mode = $webHelper->getEnv('WSP_APP_MODE', false);
+    if ($mode) echo ", $mode mode";
+?> </h3>
 <hr class="my-4">
 <?php
 

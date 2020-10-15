@@ -12,15 +12,15 @@
         echo "<p class='lead'>This instance of the application is intended to consume resources.  Use Loader to make load on it.</p>";
         exit(0);
     }
+
+    $consumer = $webHelper->getEnv('WSP_APP_DOMAIN_TO_LOAD', false);
 ?>
 
-<p class="lead">It starts Apache Benchmark test, every request will consume the chosen resources.</p>
+<p class="lead">It starts Apache Benchmark test on the Consumer (<?= $consumer ?>), every request will consume the chosen resources.</p>
 <p>Make sure that:<ul>
-  <li>autoscaling options in WSP are set according to your needs
-  <li>the app is redeployed after that.
+  <li>autoscaling options in WSP for the Consumer are set according to your needs
+  <li>the app is redeployed after that
 </ul></p>
-
-<?php require_once('lib/WebHelper.php'); ?>
 
 <h4>Choose resources to consume</h4>
 

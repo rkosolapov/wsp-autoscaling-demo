@@ -60,7 +60,7 @@ main();
 </div>
 
 <pre>
-<?php print(file_get_contents('.build.json')); ?>
+<?php print(file_get_contents('build.json')); ?>
 </pre>
 
 </body>

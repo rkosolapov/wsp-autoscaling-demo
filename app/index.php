@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <title>Autoscaling demo application</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 <body style='padding: 2em'>  
@@ -29,7 +30,7 @@ function main()
     $webHelper = new WebHelper();
 
     if ($webHelper->getEnv('WSP_DEBUG', false)) {
-        error_log('$_REQUEST: ' . print_r($_REQUEST, true) . '; $_SERVER: ' . print_r($_SERVER, true));
+        error_log('$_REQUEST: ' . print_r($_REQUEST, true) . '; $_SERVER: ' . print_r($_SERVER, true) . '; $_ENV: ' . print_r($_ENV, true));
     }
 
     switch ($webHelper->getAction())

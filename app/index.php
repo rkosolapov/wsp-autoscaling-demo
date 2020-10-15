@@ -29,7 +29,7 @@ function main()
     require_once('lib/WebHelper.php');
     $webHelper = new WebHelper();
 
-    if ($webHelper->getEnv('WSP_DEBUG', 'false') !== 'false') {
+    if (strtolower($webHelper->getEnv('WSP_DEBUG', 'false')) !== 'false') {
         error_log('$_REQUEST: ' . print_r($_REQUEST, true) . '; $_SERVER: ' . print_r($_SERVER, true) . '; $_ENV: ' . print_r($_ENV, true));
     }
 
@@ -60,7 +60,7 @@ main();
 </div>
 
 <pre>
-<?php print(file_get_contents('/build.json')); ?>
+<?php print(file_get_contents('./build.json')); ?>
 </pre>
 
 </body>

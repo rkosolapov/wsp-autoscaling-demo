@@ -7,11 +7,16 @@ $loadOptions = $webHelper->getLoadOptions();
 require_once('lib/StressHelper.php');
 $stress = new StressHelper();
 
+if ($webHelper->getEnv('WSP_APP_DOMAIN_TO_LOAD', false) || $webHelper->getEnv('WSP_APP_MODE', false) == 'LOADER') {
+    echo "<p>This instance of the application is intended to be Loader and should not consume resources.  Use it to to make load on the Consumer.</p>";
+    throw new Exception('This is the Loader but you are trying to consume resources');
+}
+
 foreach($loadOptions as $option=>$state) {
     if (empty($state)) continue;
     switch($option) {
         case StressHelper::CPU:
-            $stress->addOption('--cpu 6');
+            $stress->addOption('--cpu 2');
         break;
         case StressHelper::RAM:
             $stress->addOption('--vm 3 --vm-bytes 512m');

@@ -6,8 +6,12 @@
     $webHelper = new WebHelper();
     $loadOptions = $webHelper->getLoadOptions();
 
-    $time=$webHelper->getEnv('WSP_APP_TIME', 150);
+    $time=$webHelper->getEnv('WSP_APP_TIME', 600);
     $users=$webHelper->getEnv('WSP_APP_USERS', 50);
+    $domainToLoad=$webHelper->getEnv('WSP_APP_DOMAIN_TO_LOAD', false);
+    error_log('$domainToLoad = ' . $domainToLoad);
+    if ($domainToLoad === false)
+        throw new Exception("WSP_APP_DOMAIN_TO_LOAD is not set, can not run ab");
 
     require_once('lib/AbHelper.php');
     $abHelper = new AbHelper();
@@ -30,7 +34,7 @@
 
     $statFileUrl = $protocol . '://' . $_SERVER['HTTP_HOST'] . "/" . basename($statFile);
 
-    $url = $protocol . '://' . $_SERVER['HTTP_HOST'] . "/index.php?" . WebHelper::ACTION . "=" . WebHelper::ACTION_CONSUME;
+    $url = $domainToLoad . "/index.php?" . WebHelper::ACTION . "=" . WebHelper::ACTION_CONSUME;
     foreach ($loadOptions as $k=>$v) $url .= "&loadOptions[$k]=$v";
     $abHelper->addOption("'$url'");
 

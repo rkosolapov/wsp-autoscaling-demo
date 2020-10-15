@@ -1,3 +1,19 @@
+<?php
+    require_once('lib/WebHelper.php');
+    $webHelper = new WebHelper();
+
+    if ($webHelper->getEnv('WSP_APP_DOMAIN_TO_LOAD', false) === false 
+        && $webHelper->getEnv('WSP_APP_MODE', false) === false) {
+        echo "<p class='lead'>The application isn't configured, please follow instructions in the README file</p>";
+        throw new Exception("The application isn't configured, please follow instructions in the README file");
+    }
+
+    if ($webHelper->getEnv('WSP_APP_MODE', false) == 'CONSUMER') {
+        echo "<p class='lead'>This instance of the application is intended to consume resources.  Use Loader to make load on it.</p>";
+    }
+    exit(0);
+?>
+
 <p class="lead">It starts Apache Benchmark test, every request will consume the chosen resources.</p>
 <p>Make sure that:<ul>
   <li>autoscaling options in WSP are set according to your needs

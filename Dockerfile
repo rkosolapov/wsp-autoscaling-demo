@@ -6,4 +6,5 @@ RUN apt-get update && apt-get install -y \
     procps 
 
 COPY app/ /app
+COPY build.json* /app/build.json
 WORKDIR /app

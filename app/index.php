@@ -57,11 +57,16 @@ main();
 ?>
 
 </div>
+
+<div>
+<?php 
+    $buildInfo = json_decode(file_get_contents('build.json')); 
+    echo "<p>Build number: {$buildInfo->buildNumber}; build date: {$buildInfo->buildDate}; commit: {$buildInfo->commit}</p>";
+?>
 </div>
 
-<pre>
-<?php print(file_get_contents('build.json')); ?>
-</pre>
+</div>
+
 
 </body>
 </html>

@@ -58,7 +58,7 @@ main();
 
 </div>
 
-<div>
+<div class="d-flex justify-content-center text-muted">
 <?php 
     $buildInfo = json_decode(file_get_contents('build.json')); 
     echo "<p>Build number: {$buildInfo->buildNumber}; build date: {$buildInfo->buildDate}; commit: {$buildInfo->commit}</p>";

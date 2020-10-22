@@ -9,7 +9,7 @@
     $time=$webHelper->getEnv('WSP_APP_TIME', 600);
     $users=$webHelper->getEnv('WSP_APP_USERS', 50);
     $domainToLoad=$webHelper->getEnv('WSP_APP_DOMAIN_TO_LOAD', false);
-    error_log('$domainToLoad = ' . $domainToLoad);
+    
     if ($domainToLoad === false)
         throw new Exception("WSP_APP_DOMAIN_TO_LOAD is not set, can not run ab");
 
@@ -30,7 +30,7 @@
     } else {
         $protocol = 'http';
     }   
-    error_log('protocol=' . $protocol);
+    
 
     $statFileUrl = $protocol . '://' . $_SERVER['HTTP_HOST'] . "/" . basename($statFile);
 
@@ -76,7 +76,9 @@ Running <i>`<?= $cmd ?>`</i> <br>It will take <b><?= $webHelper->formatSeconds($
     ob_flush();
     flush();
 
+    error_log('Starting: ' . $abHelper->getCmd());
     $abHelper->passthru();
+    error_log('Finished: ' . $abHelper->getCmd());
 
     ob_flush();
     flush();

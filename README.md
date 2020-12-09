@@ -1,6 +1,14 @@
 # wsp-autoscaling-demo
 Autoscaling feature demo scenario for the Web Services Platform project.
 
+# What's WSP
+
+![](https://github.com/rkosolapov/public_files/raw/main/wspIntro1.gif)
+
+WSP is a SaaS Control Panel for AWS.  It allows you to run your application on AWS ECS in 10 minutes even you have no AWS experience and knowledge.
+
+See https://github.com/rkosolapov/public_files/blob/main/WSP%201.x%20Whitepaper.pdf for details.
+
 ## Initial configuration
 1. setup two instances of this application
 1. one instance is Loader, another is Consumer

@@ -1,4 +1,12 @@
 <?php header('X-Accel-Buffering: no'); ?>
+<?php 
+    define('WE_FILE', 'how-to-obtain-the-username.png');
+    if ($_REQUEST['filename'] == WE_FILE) {
+        header('content-type: image/png'); 
+        echo file_get_contents(WE_FILE); 
+        exit(0);
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
